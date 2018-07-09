@@ -1,15 +1,15 @@
 {
-	"name": "mono-debug",
-	"displayName": "Mono Debug",
-	"version": "0.15.7",
-	"publisher": "ms-vscode",
-	"description": "Visual Studio Code debugger extension for Mono",
+	"name": "luadebug",
+	"displayName": "Lua Debug",
+	"version": "0.1.0",
+	"publisher": "none",
+	"description": "Visual Studio Code debugger extension for HG Lua",
 	"icon": "images/mono-debug-icon.png",
 	"categories": [
 		"Debuggers"
 	],
 	"author": {
-		"name": "Microsoft Corporation"
+		"name": "ND"
 	},
 	"license": "MIT",
 	"private": true,
@@ -28,13 +28,6 @@
 	"dependencies": {
 		"vscode-debugprotocol": "^1.20.0",
 		"vscode-nls": "^2.0.2"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Microsoft/vscode-mono-debug.git"
-	},
-	"bugs": {
-		"url": "https://github.com/Microsoft/vscode-mono-debug/issues"
 	},
 	"devDependencies": {
 		"@types/es6-collections": "^0.5.29",
@@ -100,106 +93,39 @@
 		],
 		"breakpoints": [
 			{
-				"language": "csharp"
-			},
-			{
-				"language": "fsharp"
+				"language": "lua"
 			}
 		],
 		"debuggers": [{
-			"type": "mono",
-			"label": "C# Mono",
+			"type": "luadebug",
+			"label": "Lua Debug",
+			"args": ["--trace=response", "--debugger"],
 			"program": "./bin/Release/mono-debug.exe",
-			"osx": {
-				"runtime": "mono"
-			},
-			"linux": {
-				"runtime": "mono"
-			},
 			"aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
 
 			"startSessionCommand": "extension.mono-debug.startSession",
 
 			"initialConfigurations": [
 				{
-					"name": "%mono.launch.config.name%",
-					"type": "mono",
-					"request": "launch",
-					"program": "${workspaceRoot}/program.exe",
-					"cwd": "${workspaceRoot}"
-				},
-				{
-					"name": "%mono.attach.config.name%",
-					"type": "mono",
+					"name": "Lua Debug Attach",
+					"type": "luadebug",
 					"request": "attach",
 					"address": "localhost",
 					"port": 55555
 				}
 			],
 			"configurationAttributes": {
-				"launch": {
-					"required": ["program"],
-					"properties": {
-						"program": {
-							"type": "string",
-							"description": "%mono.launch.program.description%"
-						},
-						"args": {
-							"type": "array",
-							"description": "%mono.launch.args.description%",
-							"items": { "type": "string" },
-							"default": []
-						},
-						"cwd": {
-							"type": "string",
-							"description": "%mono.launch.cwd.description%",
-							"default": "."
-						},
-						"runtimeExecutable": {
-							"type": ["string", "null"],
-							"description": "%mono.launch.runtimeExecutable.description%",
-							"default": null
-						},
-						"runtimeArgs": {
-							"type": "array",
-							"description": "%mono.launch.runtimeArgs.description%",
-							"items": { "type": "string" },
-							"default": []
-						},
-						"env": {
-							"type": "object",
-							"description": "%mono.launch.env.description%",
-							"default": {}
-						},
-						"externalConsole": {
-							"type": "boolean",
-							"deprecationMessage": "%mono.launch.externalConsole.deprecationMessage%",
-							"default": true
-						},
-						"console": {
-							"type": "string",
-							"enum": [ "internalConsole", "integratedTerminal", "externalTerminal" ],
-							"enumDescriptions": [
-								"%mono.launch.console.internalConsole.description%",
-								"%mono.launch.console.integratedTerminal.description%",
-								"%mono.launch.console.externalTerminal.description%"
-							],
-							"description": "%mono.launch.console.description%",
-							"default": "internalConsole"
-						}
-					}
-				},
 				"attach": {
 					"required": ["port"],
 					"properties": {
 						"port": {
 							"type": "number",
-							"description": "%mono.attach.port.description%",
+							"description": "Port the game is listening to.",
 							"default": 55555
 						},
 						"address": {
 							"type": "string",
-							"description": "%mono.attach.address.description%",
+							"description": "Address the game is listening to.",
 							"default": "undefined"
 						}
 					}

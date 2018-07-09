@@ -3,6 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -15,12 +16,12 @@ namespace VSCodeDebug
 
 		private static bool trace_requests;
 		private static bool trace_responses;
-		static string LOG_FILE_PATH = null;
+		static string LOG_FILE_PATH = "E://output.log";
+		public static bool wait = false;
 
 		private static void Main(string[] argv)
 		{
 			int port = -1;
-
 			// parse command line arguments
 			foreach (var a in argv) {
 				switch (a) {
@@ -34,6 +35,9 @@ namespace VSCodeDebug
 				case "--server":
 					port = DEFAULT_PORT;
 					break;
+				case "--debugger":
+						wait = true;
+						break;
 				default:
 					if (a.StartsWith("--server=")) {
 						if (!int.TryParse(a.Substring("--server=".Length), out port)) {
@@ -89,6 +93,7 @@ namespace VSCodeDebug
 
 					string msg = string.Format(format, data);
 					logFile.WriteLine(string.Format("{0} {1}", DateTime.UtcNow.ToLongTimeString(), msg));
+					logFile.Flush();
 				}
 			}
 			catch (Exception ex)
@@ -110,7 +115,7 @@ namespace VSCodeDebug
 
 		private static void RunSession(Stream inputStream, Stream outputStream)
 		{
-			DebugSession debugSession = new MonoDebugSession();
+			DebugSession debugSession = new LuaDebugSession();
 			debugSession.TRACE = trace_requests;
 			debugSession.TRACE_RESPONSE = trace_responses;
 			debugSession.Start(inputStream, outputStream).Wait();

@@ -92,6 +92,11 @@ namespace VSCodeDebug
 				this.name = name;
 			}
 		}
+
+		internal static void Sleep(int v)
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 	public class Source
